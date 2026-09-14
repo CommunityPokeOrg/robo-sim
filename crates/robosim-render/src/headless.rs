@@ -102,7 +102,7 @@ impl RenderBackend for HeadlessBackend {
         self.w = w;
         self.h = h;
         self.buf = vec![0; w as usize * h as usize * 3];
-        for px in self.buf.chunks_exact_mut(3) {
+        for px in self.buf.as_chunks_mut::<3>().0 {
             px.copy_from_slice(&BG);
         }
     }
