@@ -1,0 +1,13 @@
+[package]
+name = "robosim-render"
+description = "Rendering bridge abstraction plus headless and ASCII backends"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[dependencies]
+robosim-core = { path = "../robosim-core" }
+glam.workspace = true
+serde.workspace = true
+thiserror.workspace = true

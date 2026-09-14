@@ -1,0 +1,14 @@
+[package]
+name = "robosim-ros2"
+description = "ROS 2 bridge for robo-sim: message conversion and transports"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[dependencies]
+robosim-core = { path = "../robosim-core" }
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+tungstenite.workspace = true
