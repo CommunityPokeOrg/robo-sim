@@ -101,9 +101,8 @@ def main():
         sim_stdout = sys.stdin
         sim_stdin = None
     else:
-        cmd = [args.robosim, "run", "--jsonl", "-", "--cmd-stdin"]
-        if args.steps:
-            cmd += ["--steps", str(args.steps)]
+        cmd = [args.robosim, "run", "--jsonl", "-", "--cmd-stdin", "--realtime"]
+        cmd += ["--steps", str(args.steps)]
         if args.twist:
             cmd += ["--twist", args.twist]
         proc = subprocess.Popen(

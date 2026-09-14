@@ -10,7 +10,7 @@ Start rosbridge, then run the sim against it:
 
 ```sh
 ros2 launch rosbridge_server rosbridge_websocket_launch.xml
-robosim run --rosbridge ws://localhost:9090
+robosim run --rosbridge ws://localhost:9090 --steps 0 --realtime
 ```
 
 The sim advertises and publishes over the rosbridge protocol and listens for

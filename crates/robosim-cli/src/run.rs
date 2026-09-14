@@ -6,13 +6,17 @@ use robosim_core::{Simulator, World};
 use robosim_ros2::{connect_or_fallback, Bridge, JsonlTransport, Transport};
 use std::io::{BufRead, BufReader, Write};
 use std::sync::mpsc::{channel, Receiver};
+use std::time::{Duration, Instant};
 
 /// `robosim run` arguments.
 #[derive(Args)]
 pub struct RunArgs {
-    /// Number of physics steps.
+    /// Number of physics steps (0 = run until interrupted).
     #[arg(long, default_value_t = 1000)]
     pub steps: u64,
+    /// Pace the loop to wall-clock time (one step per `dt` seconds).
+    #[arg(long)]
+    pub realtime: bool,
     /// Timestep in seconds.
     #[arg(long, default_value_t = 0.01)]
     pub dt: f64,
@@ -95,7 +99,14 @@ pub fn run(args: RunArgs) -> Result<()> {
     }
     let cmd_rx = args.cmd_stdin.then(cmd_stdin_channel);
 
-    for _ in 0..args.steps {
+    let start = Instant::now();
+    while args.steps == 0 || sim.clock.step < args.steps {
+        if args.realtime {
+            let target = start + Duration::from_secs_f64(sim.clock.time_s);
+            if let Some(wait) = target.checked_duration_since(Instant::now()) {
+                std::thread::sleep(wait);
+            }
+        }
         if let Some(rx) = &cmd_rx {
             while let Ok((v, o)) = rx.try_recv() {
                 sim.set_twist(0, v, o);
